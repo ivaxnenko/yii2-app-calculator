@@ -6,7 +6,7 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
-class Price extends ActiveRecord
+class Orders extends ActiveRecord
 {
     
 }
