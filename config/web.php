@@ -11,7 +11,17 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'language' => 'ru-RU',
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
+    ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'cache' => 'cache'
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'D9EMl4kxHUqahJXOq4-ixwxGfLTpF6ep',
@@ -40,6 +50,12 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+            ],
+        ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
             ],
         ],
         'db' => $db,

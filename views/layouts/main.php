@@ -33,7 +33,14 @@ AppAsset::register($this);
 
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <?= $content ?>
+        <div class="row">
+            <div class="col">
+                <?= $this->render('_sidebar') ?>
+            </div>
+            <div class="col-10">
+                <?= $content ?>
+            </div>
+        </div>
     </div>
 </main>
 

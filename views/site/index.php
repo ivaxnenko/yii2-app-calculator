@@ -2,12 +2,12 @@
 
 /** @var yii\web\View $this */
 
-use yii\widgets\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 $this->title = 'Калькулятор стоимости грузоперевозок';
 ?>
 
-<div class="site-index">
+<div class="site-index pt-5 pb-5">
     <div class="row mb-3 mt-3">
         <div class="col-md-4 offset-md-4 h2">
             Калькулятор стоимости грузоперевозки
