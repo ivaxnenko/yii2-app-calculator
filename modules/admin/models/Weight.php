@@ -32,6 +32,7 @@ class Weight extends \yii\db\ActiveRecord
         return [
             [['count'], 'required'],
             [['count'], 'integer'],
+            ['count', 'unique', 'message' => 'Данный тоннаж уже существует'],
             [['created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -42,7 +43,6 @@ class Weight extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            //'id' => 'ID',
             'count' => 'Тоннаж',
             'created_at' => 'Создано',
             'updated_at' => 'Обновлено',

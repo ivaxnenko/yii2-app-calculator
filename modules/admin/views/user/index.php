@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use app\modules\admin\models\User;
+use app\widgets\Alert;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Создать пользователя'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?= Alert::widget() ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -29,9 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'role',
-            //'password',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'created_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, User $model) {

@@ -13,6 +13,7 @@ class m220316_120256_create_price_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%price}}', [
+            'id' => $this->primaryKey(),
             'material_id' => $this->integer()->notNull(),
             'month_id' => $this->integer()->notNull(),
             'weight_id' => $this->integer()->notNull(),
@@ -24,6 +25,7 @@ class m220316_120256_create_price_table extends Migration
         $this->createIndex('idx-price-material_id','{{%price}}', 'material_id');
         $this->createIndex('idx-price-month_id','{{%price}}', 'month_id');
         $this->createIndex('idx-price-weight_id','{{%price}}', 'weight_id');
+        $this->createIndex('idx-price-unique_price', '{{%price}}', ['material_id', 'month_id', 'weight_id'], $unique = true );
 
         $this->addForeignKey(
             'fk-price-material_id',
@@ -143,6 +145,7 @@ class m220316_120256_create_price_table extends Migration
         $this->dropIndex('idx-price-material_id','{{%price}}');
         $this->dropIndex('idx-price-weight_id','{{%price}}');
         $this->dropIndex('idx-price-month_id','{{%price}}');
+        $this->dropIndex('idx-price-unique_price', '{{%price}}');
 
         $this->dropTable('{{%price}}');
     }

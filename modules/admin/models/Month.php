@@ -33,6 +33,7 @@ class Month extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
+            ['name', 'unique', 'message' => 'Данный месяц уже существует'],
         ];
     }
 
@@ -42,7 +43,6 @@ class Month extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'name' => 'Название',
             'created_at' => 'Создано',
             'updated_at' => 'Обновлено',

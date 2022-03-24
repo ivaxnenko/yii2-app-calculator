@@ -41,7 +41,6 @@ class WeightController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Weight::find(),
-            /*
             'pagination' => [
                 'pageSize' => 50
             ],
@@ -50,7 +49,6 @@ class WeightController extends Controller
                     'id' => SORT_DESC,
                 ]
             ],
-            */
         ]);
 
         return $this->render('index', [
@@ -62,9 +60,8 @@ class WeightController extends Controller
      * Displays a single Weight model.
      * @param int $id ID
      * @return string
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -79,15 +76,11 @@ class WeightController extends Controller
     public function actionCreate()
     {
         $model = new Weight();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-
+        
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -98,13 +91,12 @@ class WeightController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

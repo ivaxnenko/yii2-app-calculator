@@ -19,6 +19,8 @@ use app\models\Orders;
  */
 class User extends \yii\db\ActiveRecord
 {
+    public $password_hash;
+
     /**
      * {@inheritdoc}
      */
@@ -33,9 +35,10 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['username', 'password', 'role'], 'required'],
             [['username', 'created_at', 'updated_at', 'role'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 250],
-            [['username'], 'unique'],
+            [['username'], 'unique', 'message' => 'Данный логин занят'],
         ];
     }
 
@@ -62,5 +65,24 @@ class User extends \yii\db\ActiveRecord
     public function getOrders()
     {
         return $this->hasMany(Orders::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return \Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 }

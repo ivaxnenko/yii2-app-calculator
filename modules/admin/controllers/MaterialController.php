@@ -2,7 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
-use app\modules\admin\models\material;
+use app\modules\admin\models\Material;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -37,11 +37,10 @@ class MaterialController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $dataProvider = new ActiveDataProvider([
             'query' => material::find(),
-            /*
             'pagination' => [
                 'pageSize' => 50
             ],
@@ -50,7 +49,6 @@ class MaterialController extends Controller
                     'id' => SORT_DESC,
                 ]
             ],
-            */
         ]);
 
         return $this->render('index', [
@@ -64,7 +62,7 @@ class MaterialController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -80,12 +78,8 @@ class MaterialController extends Controller
     {
         $model = new material();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -98,13 +92,12 @@ class MaterialController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -118,7 +111,6 @@ class MaterialController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
@@ -136,7 +128,7 @@ class MaterialController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = material::findOne(['id' => $id])) !== null) {
+        if (($model = Material::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

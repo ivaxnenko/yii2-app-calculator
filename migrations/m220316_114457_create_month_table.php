@@ -14,7 +14,7 @@ class m220316_114457_create_month_table extends Migration
     {
         $this->createTable('{{%month}}', [
             'id' => $this->primaryKey(),
-            'name' => $this->string()->notNull(),
+            'name' => $this->string()->notNull()->unique(),
             'created_at' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP()'),
             'updated_at' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()'),
         ]);

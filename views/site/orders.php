@@ -2,6 +2,8 @@
 
 /** @var yii\web\View $this */
 
+use yii\grid\GridView;
+
 $this->title = 'Ваши расчеты';
 ?>
 
@@ -12,26 +14,21 @@ $this->title = 'Ваши расчеты';
         </div>
     <div class="row mt-3">
         <div class="col-md-4 offset-md-3">
-            <table class="table">
-                <tr>
-                    <td>Месяц</td>
-                    <td>Сырье</td>
-                    <td>Тоннаж</td>
-                    <td>Стоимость за тонну</td>
-                    <td>Общая стоимость</td>
-                    <td>Дата расчета</td>
-                </tr>
-                <?php
-                    foreach($orders as $key => $value)
-                    {
-                        $value = array_diff_key($value, ['id' => "xy",'user_id' => "xy", "updated_at" => "xy"]);
-                        echo '<tr>';
-                        foreach($value as $k => $v)
-                                echo "<td>{$v}</td>";
-                        echo '</tr>';
-                    }
-                ?>
-            </table>
+        <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'month',
+            'type',
+            'weight',
+            'tprice',
+            'price',
+            [
+                'attribute' => 'created_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
+        ],
+    ]); ?>
         </div>
     </div>
 </div>

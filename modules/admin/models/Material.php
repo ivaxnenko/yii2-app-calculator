@@ -33,6 +33,7 @@ class Material extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
+            ['name', 'unique', 'message' => 'Данное сырье уже существует'],
         ];
     }
 

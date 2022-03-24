@@ -19,17 +19,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Создать'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            //'id',
             'count',
-            'created_at',
-            'updated_at',
+            [
+                'attribute' => 'created_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Weight $model) {

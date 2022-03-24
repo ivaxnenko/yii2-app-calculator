@@ -25,16 +25,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            //'id',
-            'user_id',
+            [
+                'attribute' => 'user_id',
+                'value' => function($dataProvider) {
+                    return $dataProvider->user->username;
+                }
+            ],
             'month',
             'type',
             'weight',
             'tprice',
             'price',
-            'created_at',
-            //'updated_at',
+            [
+                'attribute' => 'created_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Orders $model) {

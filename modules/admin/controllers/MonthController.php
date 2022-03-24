@@ -41,7 +41,6 @@ class MonthController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => month::find(),
-            /*
             'pagination' => [
                 'pageSize' => 50
             ],
@@ -50,7 +49,6 @@ class MonthController extends Controller
                     'id' => SORT_DESC,
                 ]
             ],
-            */
         ]);
 
         return $this->render('index', [
@@ -62,9 +60,8 @@ class MonthController extends Controller
      * Displays a single month model.
      * @param int $id ID
      * @return string
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -80,12 +77,8 @@ class MonthController extends Controller
     {
         $model = new month();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -104,7 +97,7 @@ class MonthController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
