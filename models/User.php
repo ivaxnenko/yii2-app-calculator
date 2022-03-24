@@ -51,7 +51,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getRole()
     {

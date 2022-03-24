@@ -5,8 +5,10 @@ use yii\console\Controller;
 
 class RbacController extends Controller
 {
-
-    public function actionInit()
+    /*
+    * @return void
+    */
+    public function actionInit(): void
     {
         $auth = Yii::$app->authManager;
    

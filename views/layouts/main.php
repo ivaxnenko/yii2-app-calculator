@@ -5,12 +5,14 @@
 
 use app\assets\AppAsset;
 use yii\bootstrap4\Html;
+use app\widgets\Alert;
 
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
+
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,40 +20,43 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
+
 <body class="d-flex flex-column h-100">
-<?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
 
-<header>
-    <nav class='navbar navbar-expand-md navbar-dark bg-secondary fixed-top'>
-        <div class="container-fluid offset-1">
-            <a class="navbar-brand" href="https://www.efko.ru" target="_blank">
-                <img src="/logo.png" class="d-inline-block align-text-top" height="50wh">
+    <header>
+        <nav class='navbar navbar-expand-md navbar-dark bg-secondary fixed-top'>
+            <div class="container-fluid offset-1">
+                <a class="navbar-brand" href="https://www.efko.ru" target="_blank">
+                    <img src="/logo.png" class="d-inline-block align-text-top" height="50wh">
             </div>
-        </a>
-    </nav>
-</header>
+            </a>
+        </nav>
+    </header>
 
-<main role="main" class="flex-shrink-0">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <?= $this->render('_sidebar') ?>
-            </div>
-            <div class="col-10">
-                <?= $content ?>
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <?= $this->render('_sidebar') ?>
+                </div>
+                <div class="col-10">
+                    <?= $content ?>
+                    <?= Alert::widget() ?>
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
-<footer class="footer mt-auto py-3 text-muted">
-    <div class="container">
-        <p class="float-left">&copy; <a href="https://github.com/ivaxnenko">Ivaxnenko</a> <?= date('Y') ?></p>
-        <p class="float-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
+    <footer class="footer mt-auto py-3 text-muted">
+        <div class="container">
+            <p class="float-left">&copy; <a href="https://github.com/ivaxnenko">Ivaxnenko</a> <?= date('Y') ?></p>
+            <p class="float-right"><?= Yii::powered() ?></p>
+        </div>
+    </footer>
 
-<?php $this->endBody() ?>
+    <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage() ?>

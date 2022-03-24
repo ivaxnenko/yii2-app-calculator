@@ -26,13 +26,32 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'id',
-            'material_id',
-            'month_id',
-            'weight_id',
-            'price',
-            'created_at',
-            //'updated_at',
+            [
+                'attribute' => 'material_id',
+                'value' => function($dataProvider) {
+                    return $dataProvider->material->name;
+                }
+            ],
+            [
+                'attribute' => 'month_id',
+                'value' => function($dataProvider) {
+                    return $dataProvider->month->name;
+                }
+            ],
+            [
+                'attribute' => 'weight_id',
+                'value' => function($dataProvider) {
+                    return $dataProvider->weight->count;
+                }
+            ],
+            [
+                'attribute' => 'created_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
+            [
+                'attribute' => 'updated_at',
+                'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Price $model) {

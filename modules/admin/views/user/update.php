@@ -21,7 +21,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     ]) ?>
 
 </div>
-
+    <div>
+        <a href="<?= yii\helpers\Url::toRoute(['/admin/user/password', 'id' => $model->id]); ?>">
+        <button class="btn btn-primary mt-2 mb-2">
+            Сменить пароль
+        </button>
+        </a>
+    </div>
 <a href="<?= yii\helpers\Url::to(['/admin']) ?>">
     <button type="submit" class="btn btn-primary" name="button">К админ панели</button>
 </a>

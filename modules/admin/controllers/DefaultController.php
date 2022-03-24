@@ -29,8 +29,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Lists all User models.
-     *
      * @return string
      */
     public function actionIndex()

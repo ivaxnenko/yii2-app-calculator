@@ -10,6 +10,9 @@ class SignupForm extends Model
     public $username;
     public $password;
 
+    /**
+     * @return array the validation rules.
+     */
     public function rules()
     {
         return [
@@ -18,6 +21,9 @@ class SignupForm extends Model
         ];
     }
 
+    /**
+     * @return array the label names.
+     */
     public function attributeLabels()
     {
         return [

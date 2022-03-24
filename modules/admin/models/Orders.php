@@ -34,7 +34,7 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'weight', 'tprice', 'price'], 'required'],
+            [['user_id', 'weight', 'month', 'type', 'tprice', 'price'], 'required'],
             [['user_id', 'weight', 'tprice', 'price'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['month', 'type'], 'string', 'max' => 50],
@@ -48,7 +48,7 @@ class Orders extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'user_id' => 'user ID',
+            'user_id' => 'Пользователь',
             'month' => 'Месяц',
             'type' => 'Сырье',
             'weight' => 'Тоннаж',

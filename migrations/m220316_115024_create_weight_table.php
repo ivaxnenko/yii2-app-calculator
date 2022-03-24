@@ -14,7 +14,7 @@ class m220316_115024_create_weight_table extends Migration
     {
         $this->createTable('{{%weight}}', [
             'id' => $this->primaryKey(),
-            'count' => $this->integer()->notNull(),
+            'count' => $this->integer()->notNull()->unique(),
             'created_at' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP()'),
             'updated_at' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()'),
         ]);

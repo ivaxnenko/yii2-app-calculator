@@ -38,6 +38,7 @@ class Price extends \yii\db\ActiveRecord
             [['material_id', 'month_id', 'weight_id', 'price'], 'required'],
             [['material_id', 'month_id', 'weight_id', 'price'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['material_id','month_id','weight_id'], 'unique', 'message' => 'Цена с данным значением уже сущетсвует'],
             [['material_id'], 'exist', 'skipOnError' => true, 'targetClass' => Material::className(), 'targetAttribute' => ['material_id' => 'id']],
             [['month_id'], 'exist', 'skipOnError' => true, 'targetClass' => Month::className(), 'targetAttribute' => ['month_id' => 'id']],
             [['weight_id'], 'exist', 'skipOnError' => true, 'targetClass' => Weight::className(), 'targetAttribute' => ['weight_id' => 'id']],
@@ -51,9 +52,9 @@ class Price extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'material_id' => 'ID сырья',
-            'month_id' => 'ID месяца',
-            'weight_id' => 'ID тоннажа',
+            'material_id' => 'Сырье',
+            'month_id' => 'Месяц',
+            'weight_id' => 'Тоннаж',
             'price' => 'Стоимость',
             'created_at' => 'Создано',
             'updated_at' => 'Обновлено',

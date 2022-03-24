@@ -2,7 +2,11 @@
 
 /** @var yii\web\View $this */
 
-use yii\bootstrap4\ActiveForm;
+use yii\widgets\ActiveForm;
+use app\modules\admin\models\Month;
+use app\modules\admin\models\Weight;
+use app\modules\admin\models\Material;
+use yii\helpers\ArrayHelper;
 
 $this->title = 'Калькулятор стоимости грузоперевозок';
 ?>
@@ -18,19 +22,19 @@ $this->title = 'Калькулятор стоимости грузоперево
             <?php $form = ActiveForm::begin(); ?>
                 <div class="row">
                     <div class="col">
-                        <?php 
-                        echo $form->field($model, 'material')->dropDownList($material)->label('Сырье');
-                       ?>
+                        <?= $form->field($model, 'material')->dropDownList(
+                            ArrayHelper::map(Material::find()->all(), 'id','name'))
+                            ->label('Сырье') ?>
                     </div>
                     <div class="col">
-                        <?php 
-                            echo $form->field($model, 'month')->dropDownList($month)->label('Месяц');
-                        ?>
+                        <?= $form->field($model, 'month')->dropDownList(
+                            ArrayHelper::map(Month::find()->all(), 'id','name'))
+                            ->label('Месяц') ?>
                     </div>
                     <div class="col">
-                        <?php 
-                            echo $form->field($model, 'weight')->dropDownList($weight)->label('Тоннаж');
-                        ?>
+                        <?= $form->field($model, 'weight')->dropDownList(
+                            ArrayHelper::map(Weight::find()->all(), 'id','count'))
+                            ->label('Тоннаж') ?>
                     </div>
                 </div>
                 <div class="row mb-3 mt-3">
@@ -48,10 +52,9 @@ $this->title = 'Калькулятор стоимости грузоперево
         <div class="col-md-4 offset-md-2">
             <table class="table">
                 <tr>
-                    <td><?php echo $material[$model['material']] ?></td>
+                    <td></td>
                     <?php
-                        foreach ($month as $key => $value)
-                        {
+                        foreach (ArrayHelper::map(Month::find()->all(), 'id','name') as $key => $value) {
                             echo "<td>{$value}</td>";
                         }
                     ?>
@@ -64,10 +67,10 @@ $this->title = 'Калькулятор стоимости грузоперево
                         $weight = 25 * ($i+1);
                         echo "<td>{$weight}</td>";
                         for ($j = 0; $j<6;$j++) {
-                            if ($weight == $model['weight']*25 && $model['month'] == $currentTable[$helpTemp]['month_id']) {
-                                echo "<td class=\"table-info\">{$currentTable[$helpTemp]['price']}</td>";
+                            if ($weight == $model['weight']*25 && $model['month'] == $model['table'][$helpTemp]['month_id']) {
+                                echo "<td class=\"table-info\">{$model['table'][$helpTemp]['price']}</td>";
                             } else {
-                                echo "<td>{$currentTable[$helpTemp]['price']}</td>";
+                                echo "<td>{$model['table'][$helpTemp]['price']}</td>";
                             }
                             $helpTemp+=4;
                         };
@@ -82,7 +85,7 @@ $this->title = 'Калькулятор стоимости грузоперево
     <div class="row mt-3">
         <div class="col-md-4 offset-md-4">
             <span class="border p-3 border-primary border-5 rounded-pill">
-                Цена составит: <?= $currentPrice ?>
+                Цена составит: <?= $model['tprice'] ?>
             </span>
         </div>
     </div>

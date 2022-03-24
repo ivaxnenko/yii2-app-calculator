@@ -4,18 +4,18 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Complete;
-use app\models\Material;
-use app\models\Month;
-use app\models\Price;
 use yii\web\Controller;
-use app\models\Weight;
+use app\models\Price;
 use yii\helpers\ArrayHelper;
 use app\models\SignupForm;
 use app\models\User;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\Material;
 use app\models\Orders;
+use yii\data\ActiveDataProvider;
+use yii\web\Response;
 
 
 class SiteController extends Controller
@@ -36,7 +36,7 @@ class SiteController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index','login','signup','init'],
+                        'actions' => ['index','login','signup','init','error'],
                         'allow' => true,
                     ],
                     [
@@ -67,23 +67,24 @@ class SiteController extends Controller
             ],
         ];
     }
-      
+
+    /**
+    * @return Response|string
+    */
+
     public function actionSignup()
     {
-        if (!Yii::$app->user->isGuest)
-        {
+        if (Yii::$app->user->isGuest === false) {
             return $this->goHome();
         }
 
         $model = new SignupForm();
-        if ($model->load(\Yii::$app->request->post()) && $model->validate())
-        {
-            $user = new User();
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
+            $user = new User;
             $user->username = $model->username;
             $user->password = Yii::$app->security->generatePasswordHash($model->password);
 
-            if($user->save())
-            {
+            if($user->save()) {
                 Yii::$app->user->login($user);
 
                 $auth = Yii::$app->authManager;
@@ -93,89 +94,99 @@ class SiteController extends Controller
                 return $this->goHome();
             }
         }
-        return $this->render('signup', compact('model'));
+        return $this->render('signup',['model' => $model]);
     }
+
+    /**
+     * Login action.
+     *
+     * @return Response|string
+     */
 
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest === false) {
             return $this->goHome();
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goHome();
         }
 
         $model->password = '';
+
         return $this->render('login', [
             'model' => $model,
         ]);
     }
 
-    public function actionLogout()
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
+
+    public function actionLogout(): Response
     {
         Yii::$app->user->logout();
+        
         return $this->goHome();
     }
 
-    public function actionOrders()
-    {
-            $orders = Orders::find()
-            ->where(['user_id' => \Yii::$app->user->identity->id])
-            ->asArray()
-            ->all();
+    /**
+     * Orders action.
+     *
+     * @return string
+     */
 
-            return $this->render('orders',compact('orders'));   
+    public function actionOrders(): string
+    {
+            $dataProvider = new ActiveDataProvider([
+                'query' => Orders::find(),
+                'pagination' => [
+                    'pageSize' => 50
+                ],
+            ]);
+
+            return $this->render('orders',compact('dataProvider'));   
     }
 
-    public function actionIndex()
+    /**
+     * Index action.
+     *
+     * @return string
+     */
+
+    public function actionIndex():string
     {
-        $month = Month::find()->all();
-        $material = Material::find()->all();
-        $weight = Weight::find()->all();
         $currentPrice = null;
-        $currentTable = null;
-
-        $material  = ArrayHelper::map($material,'id','name');
-        $month  = ArrayHelper::map($month,'id','name');
-        $weight  = ArrayHelper::map($weight,'id','count');
-
         $model = new Complete();
 
-        $model->attributes = \Yii::$app->request->post('Complete');
+        if ($model->load(\Yii::$app->request->post())) {
 
-        if ($model->load(\Yii::$app->request->post()))
-        {
-            $price = Price::findOne([
+            $model->price = Price::findOne([
                 'material_id' => $model['material'],
                 'weight_id' => $model['weight'],
                 'month_id' => $model['month'],
             ]);
 
-            $table = Price::findAll([
+            $model->table = ArrayHelper::toArray(Price::findAll([
                 'material_id' => $model['material']
-            ]);
+            ]));
 
-            $currentTable = ArrayHelper::toArray($table);
-            $currentPrice = $price['price'] * 25 * $model['weight'];
+            $model->tprice = $model['price']['price'] * 25 * $model['weight'];
 
-            if (!\Yii::$app->user->isGuest)
-            {
+            if (!\Yii::$app->user->isGuest) {
                 $order = new Orders();
-
-                $order->user_id = \Yii::$app->user->identity->id;
-                $order->type = $material[$model['material']];
-                $order->weight = $weight[$model['weight']];
-                $order->month = $month[$model['month']];
-                $order->price = $currentPrice;
-                $order->tprice = $price['price'];
-    
+                $order->loadValues($model);
                 $order->save();
+
+                Yii::$app->session->setFlash('success', "Рассчет успешно сохранен!");
             }
         }
         
-
-        return $this->render('index',compact('month','material','weight', 'model','currentPrice','currentTable'));
+        return $this->render('index',compact('model'));
     }
 }
