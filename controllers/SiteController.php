@@ -12,7 +12,6 @@ use app\models\User;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\Material;
 use app\models\Orders;
 use yii\data\ActiveDataProvider;
 use yii\web\Response;
