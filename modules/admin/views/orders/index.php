@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'weight',
             'tprice',
             'price',
+            'distance',
             [
                 'attribute' => 'created_at',
                 'format' =>  ['date', 'dd.MM.YYYY HH:mm:ss'],

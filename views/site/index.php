@@ -39,6 +39,7 @@ $this->title = 'Калькулятор стоимости грузоперево
                 </div>
                 <div class="row mb-3 mt-3">
                     <div class="col-md-4 offset-md-4">
+                        <?= $form->field($model, 'distance')->textInput()->label('Расстояние'); ?>
                         <button type="submit" class="btn btn-primary" name="button">Рассчитать</button>
                     </div>
                 </div>

@@ -34,8 +34,8 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'weight', 'month', 'type', 'tprice', 'price'], 'required'],
-            [['user_id', 'weight', 'tprice', 'price'], 'integer'],
+            [['user_id', 'weight', 'month', 'type', 'tprice', 'price', 'distance'], 'required'],
+            [['user_id', 'weight', 'tprice', 'price','distance'], 'integer' , 'min' => 1],
             [['created_at', 'updated_at'], 'safe'],
             [['month', 'type'], 'string', 'max' => 50],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -54,6 +54,7 @@ class Orders extends \yii\db\ActiveRecord
             'weight' => 'Тоннаж',
             'tprice' => 'Цена за тонну',
             'price' => 'Стоимость',
+            'distance' => 'Расстояние',
             'created_at' => 'Создано',
             'updated_at' => 'Обновлено',
         ];

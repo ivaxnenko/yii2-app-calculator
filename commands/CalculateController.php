@@ -15,6 +15,8 @@ use yii\helpers\ArrayHelper;
 use app\models\Material;
 use app\models\Month;
 use app\models\Weight;
+use app\components\Command;
+use app\components\CommandContext;
 
 
 class CalculateController extends Controller
@@ -24,19 +26,40 @@ class CalculateController extends Controller
      */
     public function actionIndex()
     {
+        $cmd = new Command;
+        $context = new CommandContext;
+
         echo "Калькулятор грузоперевозок\n";
         
         $material = Console::select('Выберите сырье:',ArrayHelper::map(Material::find()->select(['id','name'])->all(), 'name','id'));
         $month = Console::select('Выберите месяц:',ArrayHelper::map(Month::find()->select(['id','name'])->all(), 'name','id'));
         $weight = Console::select('Выберите тоннаж',ArrayHelper::map(Weight::find()->select(['id','count'])->all(), 'count','id'));
-       
+        
+        $distance = Console::prompt(
+                        'Введите расстояние',
+                        [
+                            'required' => true,
+                            'validator' => function($input, &$error) {
+                                if (($input == intval($input)) && ($input > 0)) {
+                                    return true;
+                                }
+                                $error = 'Введенное значение должно быть числом больше 0!!!';
+                                return false;
+                            }
+                        ]);
+        
         $price = Price::findOne([
             'material_id' => Material::getId($material),
             'weight_id' => Weight::getId($weight),
             'month_id' => Month::getId($month),
         ]);
 
-        Console::output("По выбранным параметрам цена составит:" . $price->price * $weight);
+        $context->price = $price->price * $weight;
+        $context->distance = $distance;
+
+        $cmd->calculatePriceByDistance($context);
+
+        Console::output("По выбранным параметрам цена составит:" . $context->result);
         
         return ExitCode::OK;
     }
