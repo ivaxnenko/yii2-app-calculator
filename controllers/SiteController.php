@@ -15,6 +15,8 @@ use app\models\LoginForm;
 use app\models\Orders;
 use yii\data\ActiveDataProvider;
 use yii\web\Response;
+use app\components\Command;
+use app\components\CommandContext;
 
 
 class SiteController extends Controller
@@ -164,18 +166,25 @@ class SiteController extends Controller
         $model = new Complete();
 
         if ($model->load(\Yii::$app->request->post())) {
+            $cmd = new Command;
+            $context = new CommandContext;
 
             $model->price = Price::findOne([
-                'material_id' => $model['material'],
-                'weight_id' => $model['weight'],
-                'month_id' => $model['month'],
+                'material_id' => $model->material,
+                'weight_id' => $model->weight,
+                'month_id' => $model->month,
             ]);
 
             $model->table = ArrayHelper::toArray(Price::findAll([
-                'material_id' => $model['material']
+                'material_id' => $model->material
             ]));
 
-            $model->tprice = $model['price']['price'] * 25 * $model['weight'];
+            $context->price = $model->price->price * 25 * $model->weight;
+            $context->distance = $model->distance;
+
+            $cmd->calculatePriceByDistance($context);
+
+            $model->tprice = $context->result;
 
             if (!\Yii::$app->user->isGuest) {
                 $order = new Orders();

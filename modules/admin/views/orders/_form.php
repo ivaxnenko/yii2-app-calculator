@@ -36,6 +36,8 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'tprice')->textInput() ?>
 
     <?= $form->field($model, 'price')->textInput() ?>
+    
+    <?= $form->field($model, 'distance')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Сохранить'), ['class' => 'btn btn-success']) ?>

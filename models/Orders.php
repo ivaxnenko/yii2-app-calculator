@@ -15,8 +15,9 @@ class Orders extends ActiveRecord
         $this->type = Material::findOne(['id' => $values['material']])['name'];
         $this->weight = Weight::findOne(['id' => $values['weight']])['count'];
         $this->month = Month::findOne(['id' => $values['month']])['name'];
-        $this->price = $values['tprice'];
-        $this->tprice = $values['price']['price'];
+        $this->price = $values->tprice;
+        $this->tprice = $values->price->price;
+        $this->distance = $values->distance;
     }
 
     /**
@@ -34,6 +35,7 @@ class Orders extends ActiveRecord
             'price' => 'Стоимость',
             'created_at' => 'Создано',
             'updated_at' => 'Обновлено',
+            'distance' => 'Расстояние',
         ];
     }
 }

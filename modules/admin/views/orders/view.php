@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'type',
             'weight',
             'tprice',
+            'distance',
             'price',
             [
                 'attribute' => 'created_at',

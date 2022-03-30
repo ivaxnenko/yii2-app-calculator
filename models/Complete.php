@@ -12,6 +12,17 @@ class Complete extends Model
     public $table;
     public $price;
     public $tprice;
+    public $distance;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'distance' => 'Расстояние'
+        ];
+    }
 
     /**
      * @return array the validation rules.
@@ -20,6 +31,8 @@ class Complete extends Model
     {
         return[
             [['material', 'month', 'weight'], 'safe'],
+            ['distance', 'required', 'message' => 'Заполните данное поле'],
+            ['distance', 'integer', 'min' => 1, 'message' => 'Значение должно быть числом'],
         ];
     }
 }
